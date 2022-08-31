@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html data-dpr="1">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="format-detection" content="email=no">
+	<title>租金缴纳</title>
+    <link rel="stylesheet" type="text/css" href="skin/css/screen.css">
+    <script type="text/javascript" src="skin/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="skin/js/base.js"></script>
+	<script type="text/javascript" src="skin/js/app.js"></script>
+	<script type="text/javascript" src="layer/layer.js"></script>
+	<script type="text/javascript">
+        $(function(){
+            /*** 此处用于填写一些需要后台开发人员编写的代码，比如：某些专属于本页的提交处理 ***/
+
+        });
+    </script>
+</head>
+<body>
+	<div class="container">
+        <div class="main">
+            <!-- 这里填写正文内容 -->
+           <!-- <div class="rent-no-bind">
+                <img src="skin/images/tip.png" alt="">
+                <p>您还未绑定住户信息，请绑定后查看租金缴纳情况</p>
+            </div>-->
+            <div class="form-box form-box-rent">
+                <div class="item">
+                    <span>姓名</span>
+                    <span class="name"></span>
+                </div>
+                <div class="item">
+                    <span>身份证号码</span>
+                    <span class="idCard"></span>
+                </div>
+                <div class="item">
+                    <span>地址</span>
+                    <span class="address"></span>
+                </div>
+                <div class="item">
+                    <span>手机号码</span>
+                    <span class="phone"></span>
+                </div>
+<!--                <div class="item"><span class="btn">解除绑定</span></div>-->
+            </div>
+            <div class="gray-bloc40"></div>
+            <div class="form-box form-box-rent billList">
+<!--                <div class="item arrow" onclick="window.location.href='rentPayment-detail.html'">-->
+<!--                    <span>2019年6月</span>-->
+<!--                    <span><em class="state gray"><small>(数据正在导入，请留意最新动态) </small>待缴纳</em></span>-->
+<!--                </div>-->
+<!--                <div class="item arrow">-->
+<!--                    <span>2019年6月</span>-->
+<!--                    <span><em class="state green">已缴纳</em></span>-->
+                   <!-- <span><em class="state red">待缴纳</em></span>
+                    <span><em class="state orange">已划扣</em></span>-->
+                </div>
+            </div>
+		</div><!-- main -->
+       <!-- <div class="foot-btn foot-btn-rent">
+            <div class="btn rent-btn" onclick="window.location.href='rentPayment-userBind.html'">立即绑定</div>
+        </div>-->
+	</div><!-- container -->
+	<script type="text/javascript">
+        /*** 此处填写专属于本页的脚本内容，且不需要后台人员修改的代码 ***/
+        $(function () {
+			var idCard=getUrlParam("idCard")||"";
+			// var houseType=getUrlParam("houseType")||"";
+			var name=getUrlParam("name")||"";
+			console.log(name)
+				if(!idCard){
+					idCard = sessionStorage.getItem("idCard");
+					// houseType = sessionStorage.getItem("houseType");
+					listBillAjax(idCard,"")
+				}else{
+					$.ajax({
+						url: basePath + "/api/oauth/token",
+						method: "post",
+						data: {
+							grant_type: "password",
+							client_id: "mobile-client",
+							client_secret: "mobile",
+							username: name,
+							password: idCard,
+							// houseType: houseType
+						},
+						success: function (data) {
+							if (data.code === 200) {
+								sessionStorage.setItem("accessToken", data.data.access_token);
+								sessionStorage.setItem("idCard", idCard);
+								// sessionStorage.setItem("houseType", houseType);
+								listBillAjax(idCard,"")
+							} else {
+								layer.msg(data.msg);
+							}
+						}
+					})
+				}
+			
+		})
+		function listBillAjax(idCard,houseType){
+			$.ajax({
+				url:basePath + "/api/listBill",
+				method:"post",
+				headers:{
+					accessToken:sessionStorage.getItem("accessToken")
+				},
+				data:{
+					idCard:idCard,
+					// houseType:houseType,
+				},
+				success:function (data) {
+					if (data.code === 200){
+						var userInfo = data.data.userInfo, billList = data.data.billList;
+						if (userInfo){
+							$(".name").html(userInfo.name);
+							$(".idCard").html(userInfo.idCard);
+							$(".address").html(userInfo.address);
+							$(".phone").html(userInfo.phone);
+						}
+						if (billList) {
+							var str = "", color = "";
+							billList.forEach(function (item) {
+								switch (item.payStatys) {
+									case 1: //已缴费
+										color = "green";
+										break;
+									case 0: //待缴费
+										color = "red";
+										if (item.isOver == 1 && item.payRentEntranceStatus == 0){
+											color = "gray";
+										}
+										break;
+									case 2://"已划扣"
+										color = "orange";
+										break;
+									default:
+										color = "green";
+										break;
+								}
+								str += '<div class="item arrow" onclick="window.location.href=\'rentPayment-detail.html?detailId=' +
+										''+ item.detailId+'&date='+item.year+'-'+item.month+'#'+color+'\'">\n' +
+										'    <span>'+item.year+'年'+item.month+'月</span>\n' +
+										'    <span><em class="state '+color+'">'+item.payStatusName+'</em></span>\n' +
+										'</div>'
+							});
+							$(".billList").html(str);
+							$(".state.gray").prepend('<small>(数据正在导入，请留意最新动态) </small>');
+						}
+					} else if (data.msg.indexOf("accessToken") !== -1) {
+						layer.alert("查询信息出错，请重新输入用户信息",{
+							closeBtn:false,
+							yes: function (index) {
+								layer.close(index);
+								location.href = "./rentPayment-userBind.html";
+							}
+						});
+					} else {
+						layer.msg(data.msg);
+					}
+				}
+			})
+		}
+		function getUrlParam(name) {   
+		             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+		             var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+		             if (r != null) return decodeURIComponent(r[2]); return null; //返回参数值
+		        } 
+	</script>
+</body>
+</html>

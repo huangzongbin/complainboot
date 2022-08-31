@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.krt.gen.mapper.GenTableMapper">
+
+    <sql id="Base_Column_List">
+		id,inserter,insert_time,updater,update_time,name,comment,class_name,parent_table,parent_table_fk
+	</sql>
+
+    <!-- 带参数查询业务表列表 -->
+    <select id="selectPageList" resultType="java.util.Map">
+        select
+        t1.id,t1.insert_time,name,comment,class_name,parent_table,parent_table_fk
+        ,t2.coder,(select count(*) from gen_table where parent_table=t1.name)ccount
+        from gen_table t1
+        left join gen_scheme t2 on t1.id = t2.table_id
+        where 1=1
+        <if test="name !=null and name!=''">
+            and t1.name like concat('%',#{name})
+        </if>
+        <if test="orderName!=null and orderName !=''">
+            order by ${orderName} ${orderType}
+        </if>
+    </select>
+
+    <!-- 查询数据库表 -->
+    <select id="selectDbTable" resultType="com.krt.gen.entity.GenTable">
+		select table_name as name,table_comment as comment from information_schema.tables where table_schema=(select DATABASE())
+	</select>
+
+    <!-- 查询表信息 -->
+    <select id="selectDbTableInfo" resultType="com.krt.gen.entity.GenTable">
+		select table_name as name,table_comment as comment from information_schema.tables where table_schema=(select DATABASE()) and table_name = #{tableName}
+	</select>
+
+</mapper>
+

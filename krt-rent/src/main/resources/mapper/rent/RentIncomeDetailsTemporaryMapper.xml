@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.krt.rent.mapper.RentIncomeDetailsTemporaryMapper">
+
+    <sql id="Base_Column_List">
+        id,base_id,address,month_rental,rental,owe_rental,property,owe_property,overdue,payee,remark, advance_rental,advance_property,advance_months,advance_price,advance_rental_all,advance_property_all,advance_amount,advance_start_month,advance_end_month, total_rental,total_rental_all,name,phone,id_card,bank_card,status,payment_tiime,inserter,insert_time,updater,update_time
+    </sql>
+
+    <insert id="insertBatchByDetails">
+        insert into rent_income_details_temporary
+        (base_id,address,month_rental,rental,owe_rental,property,owe_property,overdue,total_rental,name,phone,id_card,bank_card,status,payment_tiime,advance_rental,advance_property,advance_price,
+         advance_months,advance_rental_all,advance_property_all,advance_amount,advance_start_month,advance_end_month,total_rental_all)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.baseId},#{item.address},#{item.monthRental},#{item.rental},#{item.oweRental},#{item.property},#{item.oweProperty},#{item.overdue},#{item.totalRental},#{item.name},#{item.phone},
+            #{item.idCard},#{item.bankCard},#{item.status},#{item.paymentTiime},#{item.advanceRental},#{item.advanceProperty},#{item.advancePrice},
+            #{item.advanceMonths},#{item.advanceRentalAll},#{item.advancePropertyAll},#{item.advanceAmount},#{item.advanceStartMonth},#{item.advanceEndMonth},#{item.totalRentalAll}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateDetails">
+        update rent_income_details a join rent_income_details_temporary b on a.id_card = b.id_card and  a.address = b.address
+        set a.address=b.address,a.month_rental=b.month_rental,a.rental=b.rental,a.owe_rental=b.owe_rental,
+            a.property=b.property,a.owe_property=b.owe_property,a.overdue=b.overdue,a.total_rental=b.total_rental,
+            a.name=b.name,a.phone=b.phone,a.id_card=b.id_card,a.bank_card=b.bank_card,a.status=b.status,a.payment_tiime=b.payment_tiime,
+            a.advance_rental=b.advance_rental,a.advance_property=b.advance_property,a.advance_price=b.advance_price,
+            a.advance_months=b.advance_months ,a.advance_rental_all=b.advance_rental_all,a.advance_property_all = b.advance_property_all,a.advance_amount= b.advance_amount,
+            a.advance_start_month= b.advance_start_month,a.advance_end_month = b.advance_end_month, a.total_rental_all=b.total_rental_all
+        where a.base_id=#{baseId} and b.base_id=#{baseId}
+    </update>
+
+    <!-- 带参数查询租金管理详情 临时表（用于excel导入大量数据时做临时表使用）列表 -->
+    <select id="selectPageList" resultType="com.krt.rent.entity.RentIncomeDetailsTemporary">
+        select
+            <include refid="Base_Column_List"/>
+        from rent_income_details_temporary where 1=1
+    </select>
+
+</mapper>
+

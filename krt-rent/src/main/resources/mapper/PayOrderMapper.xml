@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.krt.pay.mapper.PayOrderMapper">
+
+    <sql id="Base_Column_List">
+        id,detail_id,out_no,pmt_tag,pmt_name,ord_name,original_amount,trade_amount,jump_url,ord_mct_id,ord_shop_id,ord_no,trade_pay_time,status,insert_time,update_time,inserter,updater
+    </sql>
+
+    <!-- 带参数查询支付-订单列表 -->
+    <select id="selectPageList" resultType="com.krt.pay.entity.PayOrder">
+        select
+            <include refid="Base_Column_List"/>
+        from pay_order where 1=1
+    </select>
+
+    <!--最近创建的订单数-->
+    <select id="getRecentOrdCount" resultType="java.lang.Integer">
+        select count(id) count
+        from pay_order
+        where insert_time > DATE_ADD(now(),INTERVAL '-60' second)
+        and detail_id = #{detailId}
+    </select>
+
+
+    <!-- select o.*
+        from pay_check c left join pay_order o
+        on c.ord_no = o.ord_no
+        where o.status != 1-->
+    <select id="getCheckList" resultType="com.krt.pay.entity.PayOrder">
+        select o.*
+        from pay_order o where status = 2 and DATE_FORMAT(insert_time,'%Y-%m') = DATE_FORMAT(now(),'%Y-%m')
+    </select>
+
+</mapper>
+

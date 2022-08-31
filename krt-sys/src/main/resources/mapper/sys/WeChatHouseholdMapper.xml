@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.krt.sys.mapper.WeChatHouseholdMapper">
+
+    <sql id="Base_Column_List">
+        id,wechat_uuid,id_card,status,insert_time,inseter,update_time,updater
+    </sql>
+
+    <!-- 带参数查询微信与住户绑定关系列表 -->
+    <select id="selectPageList" resultType="com.krt.sys.entity.WeChatHousehold">
+        select
+            <include refid="Base_Column_List"/>
+        from t_wechat_household where 1=1
+    </select>
+    
+    <update id="unbound">
+        update t_wechat_household set status = #{status}
+        where id_card = #{idCard} and wechat_uuid = #{wechatUuid}
+    </update>
+
+</mapper>
+

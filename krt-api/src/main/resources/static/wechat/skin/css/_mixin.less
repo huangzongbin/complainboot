@@ -1,0 +1,44 @@
+@import "_params";  // 通用变量列表
+/*** 请注意，这里的代码仅作为混合引用，不会作为class真实存在。 ***/
+
+.disFlex(){
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+.disFlex-column(){
+    -webkit-box-orient: vertical;// 垂直排列
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+}
+.disFlex-cen(){
+	-webkit-box-pack: center;/*水平居中显示*/
+	-webkit-justify-content: center;
+	justify-content: center;
+    -webkit-box-align: center;/*垂直居中显示*/
+    -webkit-align-items: center;
+    align-items: center;
+}
+.flex(@flex: 1){
+    -webkit-box-flex: @flex;
+    -webkit-flex: @flex;
+    flex: @flex;
+	width: 1px;
+}
+
+//多行文字截断，默认两行
+.fsover-all(@num: 2){
+	display: -webkit-box !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: @num;
+}
+
+//设置兼容性投影
+.boxsw(@shadow){
+	-webkit-box-shadow: @shadow;
+	box-shadow: @shadow;
+}

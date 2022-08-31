@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.krt.sys.mapper.RegionMapper">
+
+    <!-- 根据pid查询 -->
+    <select id="selectByPid" resultType="com.krt.sys.entity.Region">
+		select
+			id,code,name,type,pid,(select CASE WHEN count(*)>0 THEN 'true' ELSE 'false' END from sys_region s where s.pid = sys_region.id) hasChild
+		from sys_region where 1=1 and pid=#{pid}
+	</select>
+
+</mapper>
+

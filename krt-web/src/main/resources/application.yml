@@ -1,0 +1,4 @@
+#spring 配置文件
+spring:
+  profiles:
+    active: test

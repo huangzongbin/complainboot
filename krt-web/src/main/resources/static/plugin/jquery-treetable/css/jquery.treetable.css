@@ -1,0 +1,17 @@
+
+table.treetable span.indenter {
+  -moz-user-select: none;
+  box-sizing: content-box;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  text-align: right;
+  width: 19px;
+}
+table.treetable span.indenter a {
+  background-position: left center;
+  background-repeat: no-repeat;
+  display: inline-block;
+  text-decoration: none;
+  width: 19px;
+}

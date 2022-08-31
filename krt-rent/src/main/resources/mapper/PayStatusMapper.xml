@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.krt.pay.mapper.PayStatusMapper">
+
+    <sql id="Base_Column_List">
+        id,detail_id,out_no,pmt_tag,pmt_name,ord_name,original_amount,trade_amount,jump_url,ord_mct_id,ord_shop_id,ord_no,trade_pay_time,status,is_modified_status,insert_time,update_time,inserter,updater
+    </sql>
+
+    <!-- 带参数查询主动查询支付状态流水记录列表 -->
+    <select id="selectPageList" resultType="com.krt.pay.entity.PayStatus">
+        select
+            <include refid="Base_Column_List"/>
+        from pay_status where 1=1
+    </select>
+
+</mapper>
+

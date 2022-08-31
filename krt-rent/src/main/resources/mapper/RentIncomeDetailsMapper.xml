@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.krt.rent.mapper.RentIncomeDetailsMapper">
+
+    <sql id="Base_Column_List">
+        id,base_id,address,month_rental,rental,owe_rental,property,owe_property,overdue,total_rental,payee,remark,name,phone,id_card,bank_card,status,payment_tiime,inserter,insert_time,updater,update_time,
+        advance_rental,advance_property,advance_price,advance_months,advance_rental_all,advance_property_all,advance_amount,advance_start_month,advance_end_month,total_rental_all
+    </sql>
+    <!-- 月初更新 -->
+    <update id="updateBeginMonth">
+        update rent_income_base a join rent_income_details b on a.id=b.base_id
+        set
+        b.overdue=
+        case DATE_FORMAT(CONCAT(a.year,'-',a.month,'-',1),'%Y-%m')
+        when date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m') then cast(b.month_rental*0.2 as decimal(25,2))
+        when date_format(DATE_SUB(curdate(), INTERVAL 2 MONTH),'%Y-%m') then cast(b.month_rental*0.5 as decimal(25,2))
+        when date_format(DATE_SUB(curdate(), INTERVAL 3 MONTH),'%Y-%m') then cast(b.month_rental*0.7 as decimal(25,2)) end,
+        b.total_rental=
+        case DATE_FORMAT(CONCAT(a.year,'-',a.month,'-',1),'%Y-%m')
+        when date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m') then cast(b.month_rental*1.2 as decimal(25,2))
+        when date_format(DATE_SUB(curdate(), INTERVAL 2 MONTH),'%Y-%m') then cast(b.month_rental*1.5 as decimal(25,2))
+        when date_format(DATE_SUB(curdate(), INTERVAL 3 MONTH),'%Y-%m') then cast(b.month_rental*1.7 as decimal(25,2)) end
+        where b.status=0 and DATE_FORMAT(CONCAT(year,'-',month,'-',1),'%Y-%m')
+        between date_format(DATE_SUB(curdate(), INTERVAL 3 MONTH),'%Y-%m')  and
+        date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m')
+    </update>
+
+    <!-- 带参数查询租金管理详情表列表 -->
+    <select id="selectPageList" resultType="com.krt.rent.entity.RentIncomeDetails">
+        select
+            <include refid="Base_Column_List"/>
+        from rent_income_details where 1=1
+        <if test="baseId !=null and baseId!=''">
+            and base_id = #{baseId}
+        </if>
+        <if test="name!=null and name!=''">
+         and name like CONCAT ('%',#{name},'%')
+         </if>
+        <if test="address!=null and address!=''">
+            and address like CONCAT ('%',#{address},'%')
+        </if>
+        <if test="phone!=null and phone!=''">
+            and phone like CONCAT ('%',#{phone},'%')
+        </if>
+        <if test="idCard!=null and idCard!=''">
+            and id_card like CONCAT ('%',#{idCard},'%')
+        </if>
+        <if test="status!=null and status!=''">
+            and status = #{status}
+        </if>
+    </select>
+
+    <!--  哪些 身份证号 是数据库中有的  -->
+    <select id="selectExistByList" resultType="java.lang.String">
+        select
+            <if test='houseType !=null and houseType == "0"'>
+                id_card
+            </if>
+            <if test='houseType !=null and houseType == "1"'>
+                concat(id_card,'-',address)
+            </if>
+        from rent_income_details where base_id = #{baseId}
+        <if test='houseType !=null and houseType == "0"'>
+            and id_card in
+            <foreach item="item" collection="list" open="(" separator="," close=")">
+                 #{item.idCard}
+            </foreach>
+        </if>
+        <if test='houseType !=null and houseType == "1"'>
+            and concat(id_card,'-',address) in
+            <foreach item="item" collection="list" open="(" separator="," close=")">
+                #{item.idcardAddr}
+            </foreach>
+        </if>
+    </select>
+
+    <!--获取账单列表-->
+    <select id="listBillGroupByMonth" resultType="map">
+        select b.year,b.month,b.status pay_rent_entrance_status,d.status pay_statys,dic.name pay_status_name,d.id detail_id,d.id_card,(select now() - over_time) > 0 is_over
+        , d.address
+        from
+        rent_income_base b
+        inner join rent_income_details d
+        on b.id = d.base_id
+        left join
+        (select code,name from sys_dic where type = 'pay_operation') dic
+        on dic.code = d.status
+        where d.id_card = #{idCard} and d.house_type = #{houseType}
+        <if test="address !=null and address !=''">
+            and address =#{address}
+        </if>
+        order by b.year desc,b.month desc
+    </select>
+
+    <!--获取月账单详情-->
+    <select id="getBillById" resultType="com.krt.rent.vo.RentIncomeDetailVO">
+        select d.id,month_rental,rental,
+               owe_rental,property,owe_property,overdue,total_rental,
+               d.status  pay_status,
+               dic.name  pay_statusName,
+               d.house_type,
+               d.advance_price,d.advance_months, d.advance_amount,d.advance_start_month,
+               d.advance_end_month,
+               (ifnull(advance_months, 0) > 0) if_advance,
+               ifnull(find_in_set(2, (select group_concat(status) from pay_order where detail_id = d.id)) > 0, 0) has_to_be_paid_order,
+               b.status  pay_rent_entrance_status,
+               (select now() - over_time) > 0  is_over,
+               b.year,
+               b.month
+        FROM rent_income_details d
+                 inner join rent_income_base b on b.id = d.base_id
+                 LEFT JOIN (select code, name FROM sys_dic WHERE type = 'pay_operation') dic
+                           ON dic.code = d.status
+        where d.id = #{detailId} and d.house_type = #{houseType}
+    </select>
+
+    <select id="selectRentalDTO" resultType="com.krt.pay.dto.WeiRentalPayBackDTO">
+        SELECT
+        CONCAT( b.`year`, '-', b.`month` ) months,
+        address numberPlate,
+        month_rental,
+        rental,
+        owe_rental,
+        property,
+        owe_property,
+        overdue,
+        total_rental_all total_rental,
+        name renter,
+        id_card idCard,
+        advance_months,
+        advance_rental_all,
+        advance_property_all
+        FROM
+        rent_income_details d
+        LEFT JOIN rent_income_base b ON d.base_id = b.id
+        where d.id = #{detailId}
+    </select>
+
+    <select id="selectRentalDTOList" resultType="com.krt.pay.dto.WeiRentalPayBackDTO">
+        SELECT
+            CONCAT( b.`year`, '-', b.`month` ) months,
+            address numberPlate,
+            month_rental,
+            rental,
+            owe_rental,
+            property,
+            owe_property,
+            overdue,
+            total_rental,
+            name renter,
+            id_card idCard,
+            d.payment_tiime paymentTime
+        FROM
+            rent_income_details d
+            LEFT JOIN rent_income_base b ON d.base_id = b.id
+            INNER JOIN (select max(id), detail_id from pay_order where status = 1 group by detail_id) o
+            on o.detail_id = d.id
+        where b.`year` = 2021 and b.`month` = #{month}
+    </select>
+</mapper>

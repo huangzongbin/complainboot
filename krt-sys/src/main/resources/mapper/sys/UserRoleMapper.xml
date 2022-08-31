@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.krt.sys.mapper.UserRoleMapper">
+
+    <!-- 查询用户角色 -->
+    <select id="selectUserRoles" resultType="com.krt.sys.entity.Role">
+        select s2.* from
+		(select user_id,role_id from sys_user_role where user_id = #{userId})s1 left JOIN
+		(select id,name,code,remark,sort from sys_role)s2 on s1.role_id = s2.id
+    </select>
+
+</mapper>
+

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.krt.sys.mapper.OrganMapper">
+
+    <!-- 根据pid查询 -->
+    <select id="selectByPid" resultType="com.krt.sys.entity.Organ">
+		select
+			id,pid,name,code,type,grade,remark,
+			(select CASE WHEN count(*)>0 THEN 'true' ELSE 'false' END from sys_organ s where s.pid = sys_organ.id) hasChild
+		from sys_organ where pid=#{pid}
+	</select>
+
+	<!-- 查询组织列表 -->
+	<select id="selectPageList" resultType="com.krt.sys.entity.Organ">
+		select
+			id,pid,name,code,type,grade,remark
+		from sys_organ
+	</select>
+
+    <!-- 查询角色部门资源 -->
+    <select id="selectRoleOrgan" resultType="com.krt.sys.entity.Organ">
+		select s2.* from
+        (select data_id from sys_role_scope where role_id = #{roleId})s1 left JOIN
+        (select id,pid,name,code from sys_organ)s2 on s1.data_id = s2.id
+	</select>
+
+</mapper>
+

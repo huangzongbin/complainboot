@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html data-dpr="1">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <title>用户查询</title>
+    <link rel="stylesheet" type="text/css" href="skin/css/screen.css">
+    <script type="text/javascript" src="skin/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="skin/js/base.js"></script>
+    <script type="text/javascript" src="skin/js/app.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            /*** 此处用于填写一些需要后台开发人员编写的代码，比如：某些专属于本页的提交处理 ***/
+
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="main">
+        <div class="form-box form-box-rent">
+            <div class="item">
+                <span>姓名</span>
+                <input type="text" placeholder="请输入姓名" name="username" class="username">
+            </div>
+            <div class="item bd">
+                <span>身份证号码</span>
+                <input type="text" placeholder="请输入身份证号码" name="password" class="password">
+            </div>
+        </div>
+        <div class="foot-btn foot-btn-rent" style="margin-top: 0.6rem">
+            <div class="btn rent-btn" onclick="payEntranceIsOpen()">立即查询</div>
+        </div>
+        <div class="gray-bloc40"></div>
+        <div class="process-box">
+            <h1>租金缴纳流程</h1>
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-icon"><i class="yonghu"></i></div>
+                    <p class="step-name">1.用户查询</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-icon"><i class="xinxi"></i></div>
+                    <p class="step-name">2.信息确认</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-icon"><i class="zujin"></i></div>
+                    <p class="step-name">3.租金缴纳</p>
+                </div>
+            </div>
+        </div>
+        <div class="prompt-info">
+            <h1>温馨提示</h1>
+            <p>
+                本缴费系统仅支持赣州市保障性住房建设运营有限公司管理的渡口路小区、阳光·龙都嘉苑小区、阳光·吉泰新城小区、章江南苑小区、阳光·和谐家园小区、阳光·金色春城小区、阳光·黄金家园小区、阳光·西域华城小区的承租户进行租金缴纳。</p>
+        </div>
+    </div><!-- main -->
+    <div class="footer-info">
+        <p>技术支持：科睿特软件集团股份有限公司</p>
+        <span>联系电话：400-9669-121</span>
+    </div>
+</div><!-- container -->
+<script type="text/javascript" src="layer/layer.js"></script>
+<script type="text/javascript">
+    /*** 此处填写专属于本页的脚本内容，且不需要后台人员修改的代码 ***/
+    function submit() {
+        var password = $(".password").val(), username = $(".username").val();
+        // houseType = $("input[name=houseType]:checked").val();
+        // console.log(houseType,11111111)
+        // if (houseType === undefined) {
+        // 	layer.msg("请选择住宅类型！");
+        // 	return;
+        // }
+        if (password && username) {
+            $.ajax({
+                url: basePath + "/api/oauth/token",
+                method: "post",
+                data: {
+                    grant_type: "password",
+                    client_id: "mobile-client",
+                    client_secret: "mobile",
+                    username: username,
+                    password: password,
+                    // houseType: houseType
+                },
+                success: function (data) {
+                    //是否放行 -1放行
+                    let pass = -1;
+                    if (data.code === 200) {
+                        $.ajax({
+                            url: basePath + "/api/selectExistsHouse",
+                            method: "post",
+                            async: false,
+                            contentType: 'application/json',
+                            data:
+                                JSON.stringify({
+                                    username: username,
+                                    password: password
+                                })
+                            ,
+                            success: function (res) {
+                                if (res.code === 200) {
+                                    if (res.data === 0) {
+                                        layer.alert("当前身份信息未匹配到承租人，请检查信息是否填写正确！");
+                                        pass = 1;
+                                    }
+                                }
+                            }
+                        })
+
+                        if (pass == -1) {
+                            sessionStorage.setItem("accessToken", data.data.access_token);
+                            sessionStorage.setItem("idCard", password);
+                            // sessionStorage.setItem("houseType", houseType);
+                            location.href = "./rentPayment.html";
+                        }
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                }
+            })
+        } else {
+            layer.msg("请输入姓名和身份证号！")
+        }
+    }
+
+    function payEntranceIsOpen() {
+        $.ajax({
+            url: basePath + "/api/payEntranceIsOpen",
+            method: "post",
+            success: function (data) {
+                if (data.code === 200) {
+                    if (data.data === true) {
+                        submit();
+                    } else {
+                        showTip();
+                    }
+                } else {
+                    layer.msg(data.msg);
+                }
+            }
+        })
+    }
+
+    function showTip() {
+        var layerIndex = layer.open({
+            type: 1,
+            title: ["温馨提示", "font-size:0.48rem;color:#2a91fa;text-align:center;padding:0.3rem 0;border-radius:.12rem;background-color:#fff;border-bottom:none;height:auto"],
+            closeBtn: 0, //不显示关闭按钮
+            anim: 2,
+            area: "90%",
+            offset: "auto",
+            btnAlign: 'c',
+            shadeClose: true, //开启遮罩关闭
+            content: '<div style="color: #333333;font-size: 0.293rem;line-height: 0.64rem;padding: 0 0.5rem">' +
+                '<p style="margin-bottom: 0.9rem;text-indent:2em">1日至5日为数据整理时间（如遇周六周日或法定节假日，则顺延），缴费系统将暂时关闭，并于6日上午9点准时开启（如遇周六周日或法定节假日，则顺延）；</p>' +
+                '<p style="margin-bottom: 0.9rem;text-indent:2em">13日至16日为第一次银行代扣时间（如遇周六周日或法定节假日，则顺延），缴费系统将暂时关闭，并于17日上午9点准时开启（如遇周六周日或法定节假日，则顺延）；</p>' +
+                '<p style="margin-bottom: 0.3rem;text-indent:2em">23日至26日为第二次银行代扣时间（如遇周六周日或法定节假日，则顺延），缴费系统将暂时关闭，并于27日上午9点准时开启（如遇周六周日或法定节假日，则顺延）。</p>' +
+                // '<p style="margin-bottom: 0.3rem;text-indent:2em">因疫情影响，租金缴纳系统缴费时间延迟到2月9日，因此带来的不便敬请谅解!</p>' +
+                '<div style="text-align: center;margin-bottom: 0.5rem"><button style="background-color: #2a91fa;border-radius: 0.133rem;width: 4.613rem;height: 1.11rem;color: white;border: none;font-size: 0.32rem;" onclick="(function f(){layer.closeAll()})()">知道了</button></div>' +
+                '</div>'
+        });
+        layer.style(layerIndex, {
+            borderRadius: '.12rem'
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+清楚表数据语句，慎用！！！
+# delete  from pay_order;
+# delete  from pay_notify;
+# delete  from pay_status;
+#
+# delete  from rent_income_base;
+# delete  from rent_income_details;
+# delete  from rent_house;

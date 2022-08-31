@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.krt.gen.mapper.GenTableColumnMapper">
+
+	<sql id="Base_Column_List">
+		id,table_id,name,comment,jdbc_type,java_type,java_field,is_insert,is_edit,is_list,is_query,excel_in,excel_out,is_row,query_type,show_type,dic_type,data_table,validate,settings,sort,inserter,insert_time,updater,update_time
+	</sql>
+
+	<!-- 查询数据库字段 -->
+	<select id="selectDbTableColumn" resultType="com.krt.gen.entity.GenTableColumn">
+		SELECT COLUMN_NAME AS name,
+		(CASE WHEN IS_NULLABLE = 'YES' THEN '1' ELSE '0' END) AS isNull,
+		ORDINAL_POSITION AS sort,
+		COLUMN_COMMENT AS comment,
+		COLUMN_TYPE AS jdbcType FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = (select database())AND TABLE_NAME = #{tableName}
+		ORDER BY ORDINAL_POSITION
+	</select>
+</mapper>
+

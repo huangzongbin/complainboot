@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.krt.sys.mapper.NumberMapper">
+
+	<sql id="Base_Column_List">
+		id,code,name,prefix,suffix,num,format_num,num_length,date_format,insert_time,inserter,updater,update_time
+	</sql>
+
+	<!-- 流水号管理 -->
+	<select id="selectPageList"  resultType="com.krt.sys.entity.Number">
+		select id,code,name,format_num,prefix,suffix,num,num_length,date_format from sys_number
+	</select>
+
+    <!-- 根据code查询 -->
+    <select id="selectByCodeForUpdate" resultType="com.krt.sys.entity.Number">
+		select id,code,name,prefix,suffix,num,format_num,num_length,date_format from sys_number where code = #{code}
+	</select>
+
+    <!-- 查询当前日期流水号 -->
+    <select id="selectNum" resultType="java.lang.Integer">
+		 SELECT IFNULL(num,0) from sys_number where code = #{code} and DATE_FORMAT(update_time,#{dateFormat}) = #{currentDate};
+	</select>
+
+    <!-- 查询流水号 -->
+    <select id="selectNumByCode" resultType="java.lang.Integer">
+ 		 SELECT IFNULL(num,0) from sys_number where code = #{code}
+	</select>
+
+	<!-- 查询当前时间 -->
+	<select id="selectCurrentDate" resultType="java.lang.String">
+		SELECT DATE_FORMAT(NOW(), #{dateFormat})
+	</select>
+
+</mapper>
+

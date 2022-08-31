@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>complainboot</artifactId>
+        <groupId>com.krt</groupId>
+        <version>3.1.4</version>
+    </parent>
+
+    <artifactId>krt-api</artifactId>
+    <name>krt-api</name>
+    <url>http://www.cnkrt.com</url>
+    <description>系统接口</description>
+
+    <dependencies>
+        <!-- 公共工具 -->
+        <dependency>
+            <groupId>com.krt</groupId>
+            <artifactId>krt-common</artifactId>
+            <version>3.1.4</version>
+        </dependency>
+        <!-- 系统管理 -->
+        <dependency>
+            <groupId>com.krt</groupId>
+            <artifactId>krt-sys</artifactId>
+            <version>3.1.4</version>
+        </dependency>
+        <!-- oauth2 -->
+        <dependency>
+            <groupId>com.krt</groupId>
+            <artifactId>krt-plugin-oauth2</artifactId>
+            <version>3.1.4</version>
+        </dependency>
+        <!-- 极光推送 -->
+        <dependency>
+            <groupId>com.krt</groupId>
+            <artifactId>krt-plugin-jpush</artifactId>
+            <version>3.1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.krt</groupId>
+            <artifactId>krt-rent</artifactId>
+            <version>3.1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.krt</groupId>
+            <artifactId>krt-goods</artifactId>
+            <version>3.1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.krt</groupId>
+            <artifactId>krt-plugin-file</artifactId>
+            <version>3.1.4</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+</project>

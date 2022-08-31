@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>complainboot</artifactId>
+        <groupId>com.krt</groupId>
+        <version>3.1.4</version>
+    </parent>
+
+    <artifactId>krt-web</artifactId>
+    <name>krt-web</name>
+    <url>http://www.cnkrt.com</url>
+    <description>项目web启动器</description>
+
+    <properties>
+        <krt.version>3.1.4</krt.version>
+    </properties>
+    <dependencies>
+        <!-- #############开发环境依赖##############   -->
+        <!-- 代码生成器 -->
+        <dependency>
+            <groupId>com.krt</groupId>
+            <artifactId>krt-gen</artifactId>
+            <version>3.1.4</version>
+        </dependency>
+        <!--  #############正式环境依赖##############   -->
+        <!-- 核心框架 -->
+        <dependency>
+            <groupId>com.krt</groupId>
+            <artifactId>krt-framework</artifactId>
+            <version>3.1.4</version>
+        </dependency>
+        <!-- 系统管理 -->
+        <dependency>
+            <groupId>com.krt</groupId>
+            <artifactId>krt-sys</artifactId>
+            <version>3.1.4</version>
+        </dependency>
+        <!-- rent -->
+        <dependency>
+            <groupId>com.krt</groupId>
+            <artifactId>krt-rent</artifactId>
+            <version>3.1.4</version>
+        </dependency>
+        <!--商品-->
+        <dependency>
+            <groupId>com.krt</groupId>
+            <artifactId>krt-goods</artifactId>
+            <version>3.1.4</version>
+        </dependency>
+        <!-- 验证码 -->
+        <dependency>
+            <groupId>com.krt</groupId>
+            <artifactId>krt-plugin-captcha</artifactId>
+            <version>3.1.4</version>
+        </dependency>
+        <!-- 接口api -->
+        <dependency>
+            <groupId>com.krt</groupId>
+            <artifactId>krt-api</artifactId>
+            <version>3.1.4</version>
+        </dependency>
+        <!-- 文件管理 -->
+        <dependency>
+            <groupId>com.krt</groupId>
+            <artifactId>krt-plugin-file</artifactId>
+            <version>3.1.4</version>
+        </dependency>
+        <!-- 定时器 -->
+        <dependency>
+            <groupId>com.krt</groupId>
+            <artifactId>krt-plugin-quartz</artifactId>
+            <version>3.1.4</version>
+        </dependency>
+
+    </dependencies>
+    <build>
+        <finalName>complainboot</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

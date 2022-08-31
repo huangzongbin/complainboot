@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.krt.rent.mapper.RentHouseMapper">
+
+    <sql id="Base_Column_List">
+        id,house_name,address,name,phone,id_card,bank_card,house_type,inserter,insert_time,updater,update_time
+    </sql>
+    <insert id="insertUserByHourse">
+        insert into sys_user(username,password,name,phone,id_card,salt,status)
+        select id_card,#{password},name,phone,id_card,#{salt},0 from rent_house
+    </insert>
+    <delete id="deleteAllByHouseType">
+        delete from rent_house where house_type =#{houseType}
+    </delete>
+    <delete id="deleteUserJoin">
+        delete a from  sys_user a inner join rent_house b on a.id_card=b.id_card
+        where  a.username != 'admin' and b.house_type =#{houseType}
+        and  not EXISTS ( select id from rent_house c where house_type !=#{houseType} and  c.id_card = a.id_card )
+
+    </delete>
+
+    <!-- 带参数查询住户管理列表 -->
+    <select id="selectPageList" resultType="com.krt.rent.entity.RentHouse">
+        select
+            <include refid="Base_Column_List"/>
+        from rent_house where  house_type = #{houseType}
+        <if test="houseName!=null and houseName!=''"> and house_name like CONCAT ('%',#{houseName},'%')</if>
+        <if test="name!=null and name!=''"> and name like CONCAT ('%',#{name},'%')</if>
+        <if test="phone!=null and phone!=''"> and phone like CONCAT ('%',#{phone},'%')</if>
+        <if test="idCard!=null and idCard!=''"> and id_card like CONCAT ('%',#{idCard},'%')</if>
+    </select>
+
+    <!-- 判断身份证号是否已绑定过  非住宅，一个人可以有多个房子所以要加上地址所以加了一个 -->
+    <select id="judgeIdCardExist" resultType="java.util.Map">
+        select count(*) number,GROUP_CONCAT(house_name) houseName from rent_house where id_card=#{idCard} and house_type =#{houseType}
+        <if test='houseType!= null and houseType ==1 '>
+            and address = #{houseAddr}
+        </if>
+    </select>
+
+    <!--  查询数据库中的已存在身份证号数据  -->
+    <select id="selectExistIdCardsByList" resultType="java.lang.String">
+        select id_card from rent_house where id_card in
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item.idCard}
+        </foreach>
+    </select>
+
+    <select id="listBillByIdCard" resultType="map">
+        select b.year,b.month,b.status open_status,d.*,dic.name statusName
+        from rent_income_base b
+        left join rent_income_details d
+        on b.id = d.base_id
+        left join
+        (select code,name from sys_dic where type = 'payment') dic
+        on dic.code = d.status
+        where d.id_card = #{idCard}
+ <choose>
+     <when test="test=id != null">
+         and d.id = ${id}
+     </when>
+     <otherwise>
+         order by year desc, month desc
+         limit 0,12
+     </otherwise>
+ </choose>
+    </select>
+
+</mapper>
+

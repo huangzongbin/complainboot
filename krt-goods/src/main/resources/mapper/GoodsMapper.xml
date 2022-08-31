@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.krt.good.mapper.GoodsMapper">
+
+    <sql id="Base_Column_List">
+        id,name,code,store,amount,type,remark,inserter,insert_time,updater,update_time
+    </sql>
+
+    <!-- 带参数查询商品信息列表 -->
+    <select id="selectPageList" resultType="com.krt.good.entity.Goods">
+        select
+            <include refid="Base_Column_List"/>
+        from goods where 1=1
+        <if test="name !=null and name!=''">
+        and  name like concat('%',#{name},'%')
+        </if>
+        <if test="code !=null and code!=''">
+        and code like concat('%',#{code},'%')
+        </if>
+        <if test="type !=null and type!=''">
+            and type =#{type}
+        </if>
+    </select>
+
+
+
+</mapper>
+

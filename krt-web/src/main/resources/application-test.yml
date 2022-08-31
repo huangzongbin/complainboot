@@ -1,0 +1,162 @@
+# 项目相关配置
+krt:
+  # 名称
+  name: complain_test
+  # 版本
+  version: 3.1.4
+
+# 开发环境配置
+server:
+  # 服务端口
+  port: 8089
+  servlet:
+    # 项目contextPath
+    context-path: /${krt.name}
+  tomcat:
+    # tomcat的URI编码
+    uri-encoding: UTF-8
+    # tomcat最大线程数，默认为200
+    max-threads: 800
+    # Tomcat启动初始化的线程数，默认值25
+    min-spare-threads: 30
+    basedir: /home/complain-test/tomcat_temp
+# spring配置
+spring:
+  # activemq
+#  activemq:
+#    broker-url: tcp://175.24.191.81:61617
+#    user: admin
+#    password: admin
+  # 文件上传
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 50MB
+  # freemarker配置
+  freemarker:
+    allow-request-override: false
+    cache: true
+    charset: UTF-8
+    check-template-location: true
+    content-type: text/html
+    prefer-file-system-access: false
+    request-context-attribute: request
+    settings:
+      number_format: 0.##
+      template_update_delay: 0
+    suffix: .ftl
+    template-loader-path: classpath:/templates/
+  # Druid连接池配置
+  datasource:
+    druid:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://124.220.190.86:3306/complainboot_test?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      username: root
+      password: huang820112
+      initial-size: 10
+      min-idle: 10
+      max-active: 200
+      maxWait: 60000
+      minEvictableIdleTimeMillis: 300000
+      poolPreparedStatements: true
+      share-prepared-statements: true
+      maxPoolPreparedStatementPerConnectionSize: 50
+      testOnBorrow: false
+      testOnReturn: false
+      testWhileIdle: true
+      timeBetweenEvictionRunsMillis: 60000
+      validationQuery: select 1
+      filter:
+        stat:
+          db-type: mysql
+          log-slow-sql: true
+          slow-sql-millis: 5000
+        wall:
+          config:
+            multi-statement-allow: true
+          db-type: mysql
+          enabled: true
+      web-stat-filter:
+        enabled: false
+  #  # redis
+  redis:
+    database: 0
+    host: 175.24.191.81
+    lettuce:
+      pool:
+        max-active: 10 # 连接池最大连接数（使用负值表示没有限制）
+        max-idle: 5 # 连接池中的最大空闲连接
+        min-idle: 1 # 连接池中的最小空闲连接
+        max-wait: 5000 # 连接池最大阻塞等待时间（使用负值表示没有限制）
+    password: huang820112
+    port: 6379
+    timeout: 3600
+
+# 日志设置配置
+logging:
+  file: logs/krt.log
+  file.max-history: 30
+  level:
+    com:
+      krt: debug
+    javamelody: ERROR
+    root: INFO
+    springfox:
+      documentation:
+        swagger: ERROR
+
+# mybatis-plus
+mybatis-plus:
+  # 检测本地配置
+  check-config-location: false
+  # mapper文件
+  mapper-locations: classpath*:/mapper/**/*Mapper.xml
+  configuration:
+    # 查询map为空是保留字段
+    call-setters-on-nulls: true
+    # 设置当JDBC类型为空时,某些驱动程序 要指定值
+    jdbc-type-for-null: null
+    # 下划线转驼峰
+    map-underscore-to-camel-case: true
+  global-config:
+    # 打印banner
+    banner: false
+    db-config:
+      # 更新策略
+      field-strategy: not_null
+      # 主键类型
+      id-type: auto
+
+# 防止XSS攻击
+xss:
+  # 过滤开关
+  enabled: true
+  # 排除链接（多个用逗号分隔）
+  excludes: /favicon.ico,/webjars/*,/html/*,/druid/*,/swagger-resources/*,/dist/*,/plugin/*,/file/*,/monitoring,/ws/*,/captcha.*,/activiti/extActModel/saveNode
+
+# 项目参数
+web:
+  # 系统缓存 ehcache 、 redis（需要配置redis参数）
+  cache: redis
+  # session 保存类别 memory:内存 redis:做分布式（需要配置redis参数）
+  session: memory
+  # 文件上传类型 location:本地 fastdfs:文件服务器（需要配置fastdfs参数）
+  upload-type: location
+  # 文件上传地址
+  update-path: /home/file/goodsImage
+  # token默认过期时间
+  token-expire: 43200
+  # 接口文档 true 允许访问 false不允许访问
+  swagger-enable: true
+  # 文件访问前缀
+  file-prefix: https://www.krtimg.com/
+  # 开启验证码验证
+  verify-code: true
+  # 指定tomcat的临时目录
+biz:
+  # 支付接口回调以及支付成功后的页面跳转地址
+  pay_back_domain: https://ganzhouzhubao.com
+
+  # 租金推送地址回调
+  housing_security_server: http://zfbz.gzbzxzf.cn:8099/housing_security_test/

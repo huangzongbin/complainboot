@@ -1,0 +1,23 @@
+2022-06-26 00:01:59.426 DEBUG 7208 --- [schedulerFactory_Worker-1] com.krt.job.KrtJob                       : ================定时更新推送还没有推送给租金系统的订单 定时任务正在执行============
+2022-06-26 00:02:00.051 DEBUG 7208 --- [schedulerFactory_Worker-1] c.k.r.m.R.selectList                     : ==>  Preparing: SELECT id,base_id,address,month_rental,rental,owe_rental,property,owe_property,overdue,total_rental,advance_rental,advance_property,advance_price,advance_months,advance_start_month,advance_end_month,advance_rental_all,advance_property_all,advance_amount,total_rental_all,name,phone,id_card,bank_card,status,has_push_bzf,house_type,payment_tiime,payee,remark,inserter,insert_time,updater,update_time FROM rent_income_details WHERE status = ? AND ( has_push_bzf = ? OR has_push_bzf IS NULL ) AND DATE_FORMAT(insert_time,'%Y-%m') = DATE_FORMAT(now(),'%Y-%m') 
+2022-06-26 00:02:00.200 DEBUG 7208 --- [schedulerFactory_Worker-1] c.k.r.m.R.selectList                     : ==> Parameters: 1(Integer), 2(Integer)
+2022-06-26 00:02:00.223 DEBUG 7208 --- [schedulerFactory_Worker-1] c.k.r.m.R.selectList                     : <==      Total: 0
+2022-06-26 00:02:00.279 DEBUG 7208 --- [schedulerFactory_Worker-1] com.krt.job.KrtJob                       : ================定时更新推送还没有推送给租金系统的订单 定时任务 完成============
+2022-06-26 00:02:00.305 DEBUG 7208 --- [schedulerFactory_Worker-1] com.krt.quartz.util.TaskUtils            : 任务名称 = 定时更新推送还没有推 ----------启动成功
+2022-06-26 00:02:00.358 DEBUG 7208 --- [taskExecutor-1] com.krt.sys.mapper.LogMapper.insert      : ==>  Preparing: INSERT INTO sys_log ( username, request_params, request_method_name, request_ip, description, use_time, type, inserter, insert_time, update_time ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2022-06-26 00:02:00.395 DEBUG 7208 --- [taskExecutor-1] com.krt.sys.mapper.LogMapper.insert      : ==> Parameters: system(String), [](String), com.krt.job.KrtJob.updateDjnOrder()(String), 192.168.44.1(String), 定时更新推送还没有推送给租金系统的订单(String), 913(Long), 3(Integer), null, 2022-06-26 00:02:00.357(Timestamp), 2022-06-26 00:02:00.357(Timestamp)
+2022-06-26 00:02:00.433 DEBUG 7208 --- [taskExecutor-1] com.krt.sys.mapper.LogMapper.insert      : <==    Updates: 1
+2022-06-26 00:02:00.533 DEBUG 7208 --- [taskExecutor-2] c.k.q.mapper.QuartzMapper.updateById     : ==>  Preparing: UPDATE quartz_job SET name=?, group_name=?, status=?, expression=?, description=?, is_concurrent=?, spring_id=?, method=?, next_fire_time=?, inserter=?, insert_time=?, updater=?, update_time=? WHERE id=? 
+2022-06-26 00:02:00.548 DEBUG 7208 --- [taskExecutor-2] c.k.q.mapper.QuartzMapper.updateById     : ==> Parameters: 定时更新推送还没有推(String), 微信支付给租金(String), 1(String), 59 1 0 * * ? (String), (String), 0(String), krtJob(String), updateDjnOrder(String), 2022-06-27 00:01:59.0(Timestamp), 1(Integer), 2021-05-07 10:50:41.0(Timestamp), 1(Integer), 2021-05-07 10:50:41.0(Timestamp), 30(Integer)
+2022-06-26 00:02:00.586 DEBUG 7208 --- [taskExecutor-2] c.k.q.mapper.QuartzMapper.updateById     : <==    Updates: 1
+2022-06-26 00:40:21.353  INFO 7208 --- [Thread-120] ConfigServletWebServerApplicationContext : Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@340b9973: startup date [Sat Jun 25 17:35:43 CST 2022]; root of context hierarchy
+2022-06-26 00:40:21.419  INFO 7208 --- [Thread-120] o.s.c.support.DefaultLifecycleProcessor  : Stopping beans in phase 2147483647
+2022-06-26 00:40:21.427  INFO 7208 --- [Thread-120] org.quartz.core.QuartzScheduler          : Scheduler schedulerFactory_$_NON_CLUSTERED paused.
+2022-06-26 00:40:21.476  INFO 7208 --- [Thread-120] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans on shutdown
+2022-06-26 00:40:21.487  INFO 7208 --- [Thread-120] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans
+2022-06-26 00:40:21.522  INFO 7208 --- [Thread-120] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'taskExecutor'
+2022-06-26 00:40:21.527  INFO 7208 --- [Thread-120] o.s.s.quartz.SchedulerFactoryBean        : Shutting down Quartz Scheduler
+2022-06-26 00:40:21.527  INFO 7208 --- [Thread-120] org.quartz.core.QuartzScheduler          : Scheduler schedulerFactory_$_NON_CLUSTERED shutting down.
+2022-06-26 00:40:21.527  INFO 7208 --- [Thread-120] org.quartz.core.QuartzScheduler          : Scheduler schedulerFactory_$_NON_CLUSTERED paused.
+2022-06-26 00:40:21.531  INFO 7208 --- [Thread-120] org.quartz.core.QuartzScheduler          : Scheduler schedulerFactory_$_NON_CLUSTERED shutdown complete.
+2022-06-26 00:40:24.191  INFO 7208 --- [Thread-120] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed

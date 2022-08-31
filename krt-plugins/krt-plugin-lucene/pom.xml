@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>krt-plugins</artifactId>
+        <groupId>com.krt</groupId>
+        <version>3.1.4</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>krt-plugin-lucene</artifactId>
+    <name>krt-plugin-lucene</name>
+    <url>http://www.cnkrt.com</url>
+    <description>全文检索插件</description>
+
+    <dependencies>
+        <!--  lucene begin -->
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers-common</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-queryparser</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-highlighter</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-grouping</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        <!--分词器-->
+        <!--<dependency>
+            <groupId>com.lucene</groupId>
+            <artifactId>IKAnalyzer</artifactId>
+            <version>5.0</version>
+        </dependency>-->
+        <!--  lucene end -->
+        <dependency>
+            <groupId>com.krt</groupId>
+            <artifactId>krt-common</artifactId>
+            <version>3.1.4</version>
+        </dependency>
+    </dependencies>
+</project>

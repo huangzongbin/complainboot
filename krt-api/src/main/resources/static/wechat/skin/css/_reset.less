@@ -1,0 +1,86 @@
+@import "_params";  // 通用变量列表
+
+/*** 重置样式 ***/
+html{-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;-webkit-user-select:none;-webkit-tap-highlight-color:rgba(0,0,0,0);}
+body,div,p,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,table,tr,td,th,form,label,input,textarea,select,button,blockquote,span,img,a img,a,pre,hr{margin:0;padding:0;}
+img,a img{border:none;vertical-align:top;-ms-interpolation-mode:bicubic;}
+h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:normal;}
+ul,li,ol,dt,dl,dd{list-style:none;}
+em,th,i,address,cite,code{font-style:normal;font-weight:normal;}
+table{border-collapse:collapse;border-spacing:0;}
+label,input,textarea,select,button{vertical-align:middle;line-height:normal;font-family:@fontFamilyPC;font-size:inherit;opacity: 1;} // opacity 清除 IOS 自带透明
+textarea{overflow: auto;resize:none;}
+h1,h2,h3,h4,h5,h6,p{white-space:normal;word-wrap:break-word;word-break:break-all;}
+
+input:focus,textarea:focus{outline:0 none;}
+a{display:block;text-decoration:none;-webkit-tap-highlight-color:rgba(0,0,0,0);}
+a:hover{text-decoration:none;}
+a:active,a:focus,a:hover{outline:0 none;}
+
+*:focus{outline:0 none;}
+    /*** 禁止显示滚动条 ***/
+element::-webkit-scrollbar{display:none;}
+input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{color:@colorGrayD;}
+input:focus::-webkit-input-placeholder,textarea:focus::-webkit-input-placeholder{color:@colorGrayE;}
+
+*{box-sizing:border-box;}
+
+html{position:relative;height:100%;min-height:100%;font-size:36px;/*no*/ font-family:@fontFamilyAPP; color: @colorBlack;}
+body{position:relative;height:100%;min-height:100%;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;font-size:12px;/*no*/}
+
+    /*** 查询媒体设置基准字体大小 ***/
+@media screen and (min-width: 320px) and (max-width: 359px) {
+    html {
+        font-size: 32px;/*no*/
+    }
+}
+@media screen and (min-width: 360px) and (max-width: 374px) {
+    html {
+        font-size: 36px;/*no*/
+    }
+}
+@media screen and (min-width: 375px) and (max-width: 413px) {
+    html {
+        font-size: 37.5px;/*no*/
+    }
+}
+@media screen and (min-width: 414px) and (max-width: 479px) {
+    html {
+        font-size: 41.4px;/*no*/
+    }
+}
+@media screen and (min-width: 480px) and (max-width: 639px) {
+    html {
+        font-size: 48px;/*no*/
+    }
+}
+@media screen and (min-width: 640px) and (max-width: 719px) {
+    html {
+        font-size: 64px;/*no*/
+    }
+}
+@media screen and (min-width: 720px) and (max-width: 749px) {
+    html {
+        font-size: 72px;/*no*/
+    }
+}
+@media screen and (min-width: 750px) and (max-width: 799px) {
+    html {
+        font-size: 75px;/*no*/
+    }
+}
+@media screen and (min-width: 800px) and (max-width: 959px) {
+    html {
+        font-size: 80px;/*no*/
+    }
+}
+@media screen and (min-width: 960px) and (max-width: 1079px) {
+    html {
+        font-size: 96px;/*no*/
+    }
+}
+@media screen and (min-width: 1080px) {
+    html {
+        font-size: 108px;/*no*/
+    }
+}

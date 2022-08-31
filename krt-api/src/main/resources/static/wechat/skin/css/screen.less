@@ -1,0 +1,375 @@
+﻿@import "_params";  // 通用变量列表
+@import "_reset";   // 重置样式
+@import "_mixin";   // 常用less混合集群
+@import "_base";    // 通用样式
+
+
+//以下是纯属于本app的样式代码：
+
+/*** 通用顶部图标 ***/
+.header-back{
+    background: url("../images/header-back.png") center center no-repeat;
+    background-size: 24px 40px;
+}
+.header-home{
+    background: url("../images/header-home.png") center center no-repeat;
+    background-size: 41px 41px;
+}
+.form-main{
+    display: flex;
+    flex-direction: column;
+}
+.form-flex1{
+    flex: 1;
+}
+.pd30{
+    padding: 30px;
+}
+.pd-lr30{
+    padding-left: 30px;
+    padding-right: 30px;
+}
+.header-pic{
+    .pic{
+        width: 100%;
+        height: auto;
+    }
+}
+.line-tit{
+    font-size: 36px;
+    color: #000000;
+    padding-left: 18px;
+    background: url("../images/line.jpg") no-repeat left center;
+    background-size: 5px 31px;
+    margin-bottom: 30px;
+}
+.in-content{
+    font-size: 28px;
+    color: #333333;
+    line-height: 1.5;
+    text-align: justify;
+    .tit{
+        color: #333333;
+    }
+    p{
+        text-indent: 60px;
+    }
+}
+
+.foot-btn{
+    padding: 10px 30px;
+    border-top: 1px #eeeeee solid;/*no*/
+    &.foot-btn-rent{
+        border-top: none;
+        padding-bottom: 47px;
+        padding-top: 20px;
+    }
+    .btn{
+        font-size: 36px;
+        color: #fff;
+        text-align: center;
+        height: 88px;
+        line-height: 88px;
+        border-radius: 44px;/*no*/
+        background-color: #ed0d00;
+    }
+    .rent-btn{
+        border-radius: 5px;
+        background-color: #2a91fa;
+    }
+}
+
+.form-box{
+    margin-bottom: 12px;
+    background-color: #fff;
+    .item{
+        padding: 0 40px;
+        min-height: 111px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #fff;
+        border-bottom: 1px #eeeeee solid;/*no*/
+        font-size: 32px;
+        color: #1a1a1a;
+        &:last-child{
+            border-bottom: none;
+        }
+        input{
+            height: 111px;
+            line-height: 111px;
+            border: none;
+            flex: 1;
+            text-align: right;
+            font-size: 30px;
+            &::placeholder{
+                color: #999999;
+            }
+        }
+    }
+    textarea{
+        padding: 30px 40px;
+        width: 100%;
+        border: none;
+        height: 280px;
+        font-size: 30px;
+        &::placeholder{
+            color: #999999;
+        }
+    }
+    .required{
+        position: relative;
+    }
+    .required:before{
+        content: "*";
+        color: #d90700;
+        font-size: 40px;
+        position: absolute;
+        left: 14px;
+        top:40px;
+    }
+}
+
+.pic-list{
+    overflow: hidden;
+    background-color: #fff;
+    padding: 10px 30px;
+    .item2{
+        width: 220px;
+        height: 124px;
+        float: left;
+        margin: 0 30px 30px 0;
+        position: relative;
+        img{
+            width: 100%;
+            height: 100%;
+        }
+        .del{
+            width: 45px;
+            height: 45px;
+            position: absolute;
+            right:-25px;
+            top: -10px;
+            background: url("../images/shanchu.png") no-repeat;
+            background-size: 41px 43px;
+        }
+    }
+}
+.pic-pop{
+    height: 382px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    img{
+        width: 224px;
+        height: 127px;
+        margin-bottom: 50px;
+    }
+}
+
+/*租金缴纳*/
+.rent-no-bind{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content: center;
+    font-size: 28px;
+    color: #333333;
+    img{
+        width: 74px;
+        height: 74px;
+        margin-bottom: 57px;
+    }
+}
+.form-box-rent{
+    margin-bottom: 0;
+    padding: 0 30px;
+    .item{
+        font-size: 28px;
+        padding: 0;
+        min-height: 90px;
+        &.arrow{
+            padding-right: 24px;
+            background: url("../images/arrow-r.png") no-repeat right center;
+            background-size: 13px 24px;
+            span:last-child{
+                text-align: right;
+            }
+        }
+        .state{
+            font-size: 28px;
+            small{
+                font-size: 24px;
+            }
+        }
+        .gray{
+            color: #7f7f7f;
+        }
+        .red{
+            color: #d60909;
+        }
+        .orange{
+            color: #ffa800;
+        }
+        .green{
+            color: #0ace21;
+        }
+        &.bd{
+            border-bottom: 1px #eeeeee solid;/*no*/
+        }
+    }
+    .item span{
+        flex: 1;
+        &:last-child{
+            flex: 2;
+            text-align: left;
+        }
+        &.btn{
+            color: #ff0000;
+            font-size: 24px;
+            text-align: center;
+        }
+    }
+    .item input{
+        text-align: left;
+        flex: 2;
+        font-size: 28px;
+    }
+}
+.gray-bloc40{
+    height: 40px;
+    background-color: #f5f5f5;
+}
+.form-box-rent-detail{
+    .item{
+        min-height: 72px;
+        font-size: 28px;
+        span:first-child{
+            color: #646464;
+        }
+        &.tit{
+            margin: 10px 0;
+            border-bottom: none;
+            span{
+                font-weight: 500;
+                font-family: "PingFang SC";
+                font-size: 36px;
+                color: #333;
+            }
+        }
+    }
+    .all-num{
+        color: #2a91fa;
+        font-size: 36px;
+    }
+}
+.yzm-box{
+    img{
+        width: 180px;
+        height: 66px;
+        margin-left: 20px;
+    }
+}
+.process-box{
+    color: #333333;
+    margin-top: 40px;
+    padding: 0 .4rem;
+    h1{
+        text-align: center;
+        font-size: 30px;
+        line-height: 70px;
+        margin-bottom: 30px;
+    }
+    .process-steps{
+        .disFlex;
+
+        .process-step{
+            flex: 1;
+            text-align: center;
+            .step-icon{
+                position: relative;
+                i{
+                    display: inline-block;
+                    width: 64px;
+                    height: 64px;
+                    border: solid 1px #2a91fa;
+                    border-radius: 100%;
+                    &.yonghu{
+                        background: url("../images/yonghuchaxun.png") no-repeat center;
+                        background-size: 33px 32px;
+                    }
+                    &.xinxi{
+                        background: url("../images/xinxiqueren.png") no-repeat center;
+                        background-size: 27px 30px;
+                    }
+                    &.zujin{
+                        background: url("../images/zujinjiaona.png") no-repeat center;
+                        background-size: 29px 33px;
+                    }
+                }
+                &:before{
+                    position: absolute;
+                    top: 50%;
+                    left: 0;
+
+                    display: inline-block;
+                    content: "";
+                    width: calc(50% - 32px);
+                    height: 2px;
+                    background-color: #e6e6e6;
+                }
+                &:after{
+                    position: absolute;
+                    top: 50%;
+                    right: 0;
+
+                    display: inline-block;
+                    content: "";
+                    width: calc(50% - 32px);
+                    height: 2px;
+                    background-color: #e6e6e6;
+                }
+            }
+            .step-name{
+                font-size: 26px;
+            }
+            &:first-of-type{
+                .step-icon:before{
+                    content: none;
+                }
+            }
+            &:last-of-type{
+                .step-icon:after{
+                    content: none;
+                }
+            }
+        }
+    }
+}
+.prompt-info{
+    color: #333333;
+    margin-top: 90px;
+    padding: 0 60px;
+    line-height: 42px;
+    font-size: 22px;
+    h1{
+        text-align: center;
+        font-size: 30px;
+        line-height: 70px;
+        margin-bottom: 20px;
+    }
+}
+.footer-info{
+    position: absolute;
+    bottom: 43px;
+    left: 0;
+    width: 100%;
+
+    color: #333333;
+    font-size: 18px;
+    line-height: 30px;
+    letter-spacing: 2px;
+    text-align: center;
+}

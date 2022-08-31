@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>complainboot</artifactId>
+        <groupId>com.krt</groupId>
+        <version>3.1.4</version>
+    </parent>
+
+    <artifactId>krt-sys</artifactId>
+    <name>krt-sys</name>
+    <url>http://www.cnkrt.com</url>
+    <description>系统管理</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.krt</groupId>
+            <artifactId>krt-common</artifactId>
+            <version>3.1.4</version>
+        </dependency>
+        <!-- 系统监控 -->
+        <dependency>
+            <groupId>com.github.oshi</groupId>
+            <artifactId>oshi-core</artifactId>
+            <version>${oshi-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna-platform</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

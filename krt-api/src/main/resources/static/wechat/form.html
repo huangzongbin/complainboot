@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html data-dpr="1">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="format-detection" content="email=no">
+	<title>投诉举报平台</title>
+    <link rel="stylesheet" type="text/css" href="skin-android/imgUpload.css">
+    <link rel="stylesheet" type="text/css" href="skin/css/screen.css">
+    <script type="text/javascript" src="skin/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="skin/js/base.js"></script>
+	<script type="text/javascript" src="skin/js/app.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            /*** 此处用于填写一些需要后台开发人员编写的代码，比如：某些专属于本页的提交处理 ***/
+
+        });
+    </script>
+</head>
+<body>
+        <div class="container">
+            <div class="header-pic">
+                <img src="skin/images/banner2.jpg" alt="" class="pic">
+            </div>
+            <div class="main form-main" style="background-color: #f5f5f5">
+                <!-- 这里填写正文内容 -->
+                <form id="krtForm" class="form-flex1 form-main">
+                    <input type="hidden" name="cpnImg">
+                    <div class="form-box">
+                        <div class="item">
+                            <span>姓名</span>
+                            <input type="text" placeholder="请输入您的姓名" name="linkName" value="">
+                        </div>
+                        <div class="item required">
+                            <span>手机号码</span>
+                            <input type="text" placeholder="请输入您的手机号码" name="linkPhone" value="">
+                        </div>
+                    </div>
+                    <div class="form-box">
+                        <div class="required"><textarea name="cpnContent" id="" class="textarea" placeholder="请写下您的投诉举报内容"></textarea></div>
+                    </div>
+                    <div class="form-box form-flex1" style="margin-bottom: 0">
+                        <div class="item" style="border-bottom: none">
+                            <span>证明图片<br><small style="color: #999;">(请上传5张以内图片)</small></span>
+                        </div>
+                        <div class="pic-list">
+                            <div class="item2"><img src="skin/images/pic_add.jpg" alt="" class="pic-add"></div>
+                        </div>
+                    </div>
+                </form>
+            </div><!-- main -->
+            <div class="foot-btn">
+                <div class="btn" onclick="submit()">马上提交</div>
+            </div>
+        </div><!-- container -->
+    <script type="text/javascript" src="skin-android/imgUpload.js"></script>
+	<script type="text/javascript">
+        /*** 此处填写专属于本页的脚本内容，且不需要后台人员修改的代码 ***/
+        $(function () {
+            $(".pic-list").on("click",".item2 .del",function () {
+                $(this).parents(".item2").remove();
+            });
+        })
+
+        function submit() {
+            var pic =  $(".pic-list").find(".item2 .del");
+            var img = [];
+            $.each(pic,function () {
+                img.push($(this).siblings("img").attr("src"))
+            });
+            if(img.length!=0){
+                var cpnImg = $("input[name='cpnImg']").val(img.join(","));
+            }
+
+            var linkName = $("input[name='linkName']").val();
+            var linkPhone = $("input[name='linkPhone']").val();
+            var cpnContent = $("textarea[name='cpnContent']").val();
+
+            if(linkPhone==""){
+                lcp_alert(false,"温馨提示","请输入手机号码！",0)
+            }else if(cpnContent==""){
+                lcp_alert(false,"温馨提示","请输入投诉举报内容！",0)
+            }else{
+                $.ajax({
+                    url:basePath+'/api/complain/complainSave',
+                    type:'POST',
+                    data:$("#krtForm").serialize(),
+                    success:function (d) {
+                        if(d.code==0||d.code==200){
+                            lcp_alert("pic",false,"<div class='pic-pop'><img src='skin/images/ok.png'><p>投诉举报内容，已提交成功！</p><p>(<span style='color: red;' id='time' onload='cutDown(this)'>3</span>秒后自动跳转)</p></div>",0);
+                            var nowT = 3;
+                            var a = setInterval(function () {
+                                nowT = nowT-1;
+                                $("body #time").html(nowT);
+                                if(nowT==0){
+                                    lcp_ok();
+                                    clearInterval(a);
+                                    window.location.reload();
+                                }
+                            },1000);
+                        }else{
+                            lcp_alert("pic",false,"<div class='pic-pop'><img src='skin/images/no.png'><p>投诉举报内容，提交失败！</p><p>请重新提交</p></div>",0);
+                        }
+                    },
+                    error:function (e) {
+                        lcp_alert("pic",false,"<div class='pic-pop'><img src='skin/images/no.png'><p>网络连接失败！</p></div>",0);
+                    }
+                })
+            }
+        }
+
+        var uploadUrl = basePath+'/api/upload/fileUpload';
+       $(".pic-list").on('click',".pic-add",function () {
+            var fileUpload;
+            function initImgView(num, url) {
+                if (fileUpload) fileUpload.myShow();
+                else fileUpload = imgUpload({
+                    num:num,
+                    zIndex:99,
+                    url:url,
+                    fileName:"file",
+                    myFileName:"imgFileName_true",     //提交的文件名name
+                    getUrl:function(data){
+                        if(data.code == "0"){
+                            var u = data.url;
+                            return u;
+                        }
+                        else return "error";
+                    },
+                    error:function(e){
+                        //以下提示图片上传时出现的错误，可接收，也可不接收。
+                        //alert("错误信息："+e);
+                        //fileUpload.message("错误信息："+e);
+                    },
+                    ok:function(data){
+                       showPic(data.join(","));
+                    },
+                    hide:function(){
+                        //fileUpload.destroy();
+                        fileUpload = null;
+                    }
+                });
+            }
+            initImgView(5, uploadUrl);
+        });
+        /*showPic('../static/images/bs_big_tab_icon_31.png');*/
+        window.showPic = function (str) {
+            $(".pic-list").html('<div class="item2"><img src="skin/images/pic_add.jpg" alt="" class="pic-add"></div>');
+            if(str.length>0){
+                var d = str.split(",");
+                for(i in d){
+                    $(".pic-list").append('<div class="item2"><i class="del"></i><img src="'+d[i]+'" alt=""></div>');
+                }
+            }
+        };
+    </script>
+</body>
+</html>

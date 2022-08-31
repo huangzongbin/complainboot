@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.krt.sys.mapper.UserMapper">
+
+    <sql id="Base_Column_List">
+        id,username,password,avatar,name,birthday,sex,phone,salt,status,organ_id,app_type,registration_id,inserter,insert_time,updater,update_time
+    </sql>
+
+    <!-- 分页 -->
+    <select id="selectPageList" resultType="java.util.Map">
+        select s1.*,s2.code from
+        (select id,username,password,avatar,name,birthday,sex,phone,salt,status,organ_id from sys_user where username!='admin'
+        <if test="username !=null and username!=''">
+            and username like concat('%',#{username},'%')
+        </if>
+        <if test="name !=null and name!=''">
+            and name like concat('%',#{name},'%')
+        </if>
+        <if test="status !=null and status!=''">
+            and status = #{status}
+        </if>
+        )s1 left JOIN
+        (select id,code from sys_organ)s2 on s1.organ_id =  s2.id where 1=1
+        <if test="organCode !=null and organCode!=''">
+            and code like concat(#{organCode},'%')
+        </if>
+    </select>
+
+    <!--  通过Username查找 -->
+    <select id="selectByUsername" resultType="com.krt.sys.entity.User">
+        select * from sys_user where username=#{username}
+    </select>
+
+    <!-- 通过idcard删除 -->
+    <delete id="deleteByIdcard">
+        delete from sys_user where id_card=#{idCard}
+    </delete>
+
+    <!-- 通过idcard查找 -->
+    <select id="selectByIdcard" resultType="com.krt.sys.entity.User">
+        select * from sys_user where id_card=#{idCard}
+    </select>
+
+</mapper>
+

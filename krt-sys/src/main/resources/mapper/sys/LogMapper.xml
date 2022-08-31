@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.krt.sys.mapper.LogMapper">
+
+    <sql id="Base_Column_List">
+        id,username,request_params,request_method,request_method_name,request_ip,description,use_time,type,
+        request_url,exception_code,exception_detail,os,device,browser,inserter,insert_time,updater,update_time
+    </sql>
+
+    <!-- 分页 -->
+    <select id="selectPageList" resultType="java.util.Map">
+        select
+          id,username,request_params,request_method,request_method_name,request_ip,description,use_time,type,
+          request_url,exception_code,exception_detail,os,device,browser,inserter,insert_time
+        from sys_log where 1=1
+        <if test="username!=null and username!=''">
+            and username like concat('',#{username},'%')
+        </if>
+        <if test="description!=null and description!=''">
+            and description like concat('',#{description},'%')
+        </if>
+        <if test="type!=null and type!=''">
+            and type = #{type}
+        </if>
+        <if test="useTime!=null and useTime!=''">
+            <![CDATA[ and use_time > #{useTime}  ]]>
+        </if>
+    </select>
+
+</mapper>
+

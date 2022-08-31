@@ -1,0 +1,88 @@
+/*
+    name : 通用变量
+*/
+
+//色彩
+@colorTheme       : #ec0d00;        //此设计主色调
+@colorThemeLight  : lighten(@colorTheme, 10%);
+@colorThemeDark   : darken(@colorTheme, 10%);
+@colorBorder      : #e5e5e5;
+@colorWhite       : #ffffff;
+@colorBlack       : #000000;
+@colorGray        : #efeff4;        //常用灰色调
+    //自定义灰色调系列
+@colorGrayE       : #eeeeee;
+@colorGrayD       : #d2d2d2;
+@colorGrayC       : #cccccc;
+@colorGrayB       : #b2b2b2;
+@colorGrayA       : #a1a1a1;
+@colorGray9       : #999999;
+@colorGray8       : #888888;
+@colorGray7       : #777777;
+@colorGray6       : #666666;
+@colorGray5       : #555555;
+@colorGray4       : #444444;
+@colorGray3       : #333333;
+@colorGray2       : #222222;
+@colorGray1       : #111111;
+
+//字体
+@fontFamilyAPP    : Roboto, "Droid Sans", "Droid Sans Fallback", "Helvetica Neue", "Heiti SC", Helvetica, "Hiragino Sans GB", "microsoft yahei", Tahoma, Arial, STHeiTi, sans-serif;
+@fontFamilyPC     : "microsoft yahei",Microsoft YaHei,"\5B8B\4F53",tahoma,verdana,Arial;
+
+//基本字体大小
+@fontSizeSmallest : 20px;
+@fontSizeSmaller  : 24px;
+@fontSizeSmall    : 26px;
+@fontSizeNormal   : 28px;
+@fontSizeBig      : 30px;
+@fontSizeBigger   : 32px;
+@fontSizeBiggest  : 36px;
+
+//黑色透明背景
+@backGroundBlack  : url("../images/jy_black.png");      //==black-20.png。但这张图片会预加载！
+@backGroundBlack10: url("../images/black-10.png");
+@backGroundBlack20: url("../images/black-20.png");      //常用黑色透明背景
+@backGroundBlack30: url("../images/black-30.png");
+@backGroundBlack40: url("../images/black-40.png");
+@backGroundBlack60: url("../images/black-60.png");
+@backGroundBlack80: url("../images/black-80.png");
+
+//头部高度
+@headHeight : 88px;
+
+//样式书写参考顺序(仅提供参考，可根据个人习惯进行适当调整，书写习惯确认了就要自己遵守哦)
+.baseCSSWriteHabit(){
+    /*** 引用less混合 ***/           //less混合区mixin引用
+    display: none;                  //显示
+    float: left;                    //定位
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    z-index: auto;
+    box-sizing: content-box;        //盒模型设置
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    width: auto;
+    min-width: 0;
+    max-width: 100%;
+    height: auto;
+    line-height: inherit;   /***特殊类文本设置可按情况插入到合适的地方***/
+    min-height: 0;
+    max-height: 100%;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    font-size: 12px;                //文本设置
+    font-weight: bold;
+    font-style: normal;
+    color: #000000;
+    text-align: center;
+    white-space: nowrap;            //文本截断设置
+    text-overflow: ellipsis;
+    overflow: hidden;
+    background: transparent;        //背景
+    background-size: auto auto;
+    /*** others ***/                //其他设置
+}

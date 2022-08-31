@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.krt.msgLog.mapper.TMsgLogMapper">
+
+    <sql id="Base_Column_List">
+        id,phone,content,return_msg,cId,inserter,insert_time,updater,update_time,type
+    </sql>
+
+    <!-- 带参数查询消息日志列表 -->
+    <select id="selectPageList" resultType="com.krt.msgLog.entity.TMsgLog">
+        select
+            <include refid="Base_Column_List"/>
+        from t_msg_log where 1=1
+    </select>
+
+</mapper>
+

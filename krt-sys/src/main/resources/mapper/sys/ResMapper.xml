@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.krt.sys.mapper.ResMapper">
+
+    <sql id="Base_Column_List">
+      id,name,url,pid,icon,permission,sort,type,target,inserter,insert_time,updater,update_time
+    </sql>
+
+    <!-- 根据pid查询资源 -->
+    <select id="selectByPid" resultType="com.krt.sys.entity.Res">
+        select id,name,url,pid,icon,permission,sort,type,target,
+        (select CASE WHEN count(*)>0 THEN 'true' ELSE 'false' END from sys_res s where s.pid = sys_res.id) hasChild
+        from sys_res where pid=#{pid} order by sort asc
+    </select>
+
+    <!-- 查询用户的资源id -->
+    <select id="selectUserUrlRes" resultType="Integer">
+        select distinct s2.res_id from sys_user_role s1
+        LEFT JOIN sys_role_res s2 on s1.role_id = s2.role_id
+        where s1.user_id = #{userId}
+    </select>
+
+    <!-- 查询全部资源树 -->
+    <select id="selectAllTree" resultType="com.krt.sys.entity.Res">
+        select id,name,pid from sys_res order by sort asc
+    </select>
+
+    <!-- 获取角色权限 -->
+    <select id="selectRolesPermission" resultType="com.krt.sys.entity.Res">
+        select s2.* from
+        (select DISTINCT(res_id) res_id from sys_role_res where role_id in
+            <foreach collection="roles" item="role" index="index" open="(" close=")" separator=",">
+                #{role.id}
+            </foreach>
+        )s1 left JOIN
+        (select id,name,url,pid,icon,permission,sort,type,target from sys_res)s2 on s1.res_id = s2.id
+        order by sort asc
+    </select>
+
+    <!-- 查询角色资源 -->
+    <select id="selectRoleRes" resultType="com.krt.sys.entity.Res">
+        select s2.* from
+        (select DISTINCT(res_id) res_id from sys_role_res where role_id = #{roleId})s1 left JOIN
+        (select id,name,url,pid,icon,permission,sort,type,target from sys_res)s2 on s1.res_id = s2.id
+        order by sort asc
+    </select>
+
+</mapper>

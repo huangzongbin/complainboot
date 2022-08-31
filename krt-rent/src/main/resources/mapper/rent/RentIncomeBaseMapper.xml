@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.krt.rent.mapper.RentIncomeBaseMapper">
+
+    <sql id="Base_Column_List">
+        id,year,month,number,status,over_time,pay_status,inserter,insert_time,updater,update_time
+    </sql>
+
+    <!-- 带参数查询租金管理基础信息表列表 -->
+    <select id="selectPageList" resultType="com.krt.rent.entity.RentIncomeBase">
+        select
+            <include refid="Base_Column_List"/>
+        from rent_income_base where 1=1 and house_type =#{houseType}
+        order by year desc, month desc
+    </select>
+
+    <select id="entranceIsOpen" resultType="boolean">
+        select count(*) from rent_income_base
+        where (status = 1 or (status = 0 and (select now() - over_time) &lt; 0 ))
+          and house_type= #{houseType}
+        <if test="baseId != null">
+            and id = #{baseId}
+        </if>
+    </select>
+</mapper>
+

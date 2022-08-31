@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.krt.complain.mapper.ComplainMapper">
+
+    <sql id="Base_Column_List">
+        id,link_name,link_phone,community,is_phone_reply,cpn_content,cpn_img,cpn_time,status,return_content,opt_name,opt_time,inserter,insert_time,updater,update_time
+    </sql>
+
+    <!-- 带参数查询投诉信息列表 -->
+    <select id="selectPageList" resultType="com.krt.complain.entity.Complain">
+        select
+            <include refid="Base_Column_List"/>
+        from t_complain where 1=1
+        <if test="linkName!=null and linkName!=''"> and link_name like CONCAT('%',#{linkName},'%')</if>
+        <if test="linkPhone!=null and linkPhone!=''"> and link_phone like CONCAT('%',#{linkPhone},'%')</if>
+        <if test="status!=null and status!=''"> and status=#{status} </if>
+        <if test="year!=null and year!=''"> and year(cpn_time)=#{year} </if>
+        <if test="month!=null and month!=''"> and month(cpn_time)=#{month} </if>
+    </select>
+
+</mapper>
+
